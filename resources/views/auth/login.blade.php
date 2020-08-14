@@ -10,7 +10,7 @@
                    placeholder="{{ __('E-Mail Address') }}" data-parsley-trigger="change"
                    name="email" value="{{ old('email') }}" required
                    autocomplete="email" autofocus>
-            <label for="inputEmail"><i class="fa fa-envelope auth-icon" style="padding-right: 5px"></i> {{ __('E-Mail Address') }}</label>
+            <label for="inputEmail"><i class="fa fa-envelope auth-icon pl-1" style="padding-right: 5px"></i> {{ __('E-Mail Address') }}</label>
 
             @error('email')
             <span class="invalid-feedback" role="alert">
@@ -24,7 +24,7 @@
                    class="form-control @error('password') is-invalid @enderror"
                    placeholder="{{ __('Password') }}" data-parsley-minlength="8"
                    name="password" required autocomplete="current-password">
-            <label for="inputPassword"><i class="fa fa-lock auth-icon"></i> {{ __('Password') }}</label>
+            <label for="inputPassword"><i class="fa fa-lock auth-icon pl-1"></i> {{ __('Password') }}</label>
 
             @error('password')
             <span class="invalid-feedback" role="alert">

@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         require_once app_path() . '\Helpers\functions.php';
+        require_once app_path() . '\Helpers\date_time.php';
     }
 }

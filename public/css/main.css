@@ -221,6 +221,7 @@ thead th, thead td {
     border-radius: 20px;
 }
 
+
 .card .card__container {
     padding: 2rem;
     width: 100%;
@@ -262,6 +263,43 @@ thead th, thead td {
     text-align: center;
     font-family: "Roboto", sans-serif;
     box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
+}
+
+.required-input:after {
+    content: "*";
+    color: red;
+    font-size: 14px;
+    position: absolute;
+    top: -2px;
+}
+
+.transaction-description{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-top: 1rem;
+}
+
+.transaction-category{
+    top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 4px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.transaction-date{
+    color: #3097d1;
+    padding-top: 3px;
+    font-weight: 500;
+    padding-right: 10px;
+}
+.mobileFilter{
+    display: none;
+}
+#mobileStatistics{
+    display: none;
 }
 
 

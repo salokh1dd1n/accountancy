@@ -62,4 +62,23 @@ class Transaction extends Model
     {
         return number_format($this->amount, 0, '', ' ');
     }
+
+    public function scopeFilterCategory($query)
+    {
+        return
+        $query->when(request('category_id'), function ($q, $categoryId) {
+                if ($categoryId == 'null') {
+                    $q->whereNull('category_id');
+                } else {
+                    $q->where('category_id', $categoryId);
+                }
+            });
+    }
+    public function scopeFilterDescription($query)
+    {
+        return
+        $query->when(request('query'), function ($q, $query) {
+                $q->where('description', 'like', '%'.$query.'%');
+            });
+    }
 }

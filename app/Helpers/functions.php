@@ -12,3 +12,18 @@ function format_number($number)
 
     return str_replace('-', '- ', $number);
 }
+
+function isSelected($monthKey, $req, $format = null)
+{
+    $return = 'selected';
+    if (request($req)) {
+        if ($monthKey == request($req)) {
+            return $return;
+        }
+    }
+    else{
+        if ($monthKey == date($format)) {
+            return $return;
+        }
+    }
+}

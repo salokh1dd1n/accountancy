@@ -20,3 +20,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/transactions', 'TransactionController@index')->name('transactions');
+Route::get('/transactions/{sss}', 'TransactionController@index')->name('transactions.s')->where('sss', 'spending|income');
+//Route::post('/transactions/add/{transaction}', 'TransactionController@addTransaction')->name('transactions.add')->where('transaction', 'spending|income');

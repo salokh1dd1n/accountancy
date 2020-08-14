@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CategoryRepository;
 use App\Repositories\TransactionRepository;
-use App\Traits\ForAccountacyTrait;
+use App\Traits\TransactionTrait;
 use App\Repositories\Extra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -11,9 +12,10 @@ use Illuminate\Support\Carbon;
 class TransactionController extends Controller
 {
 
-    use ForAccountacyTrait;
+    use TransactionTrait;
 
     private $transactionsRepository;
+    private $categoryRepository;
 
     /**
      * Create a new controller instance.
@@ -24,6 +26,7 @@ class TransactionController extends Controller
     {
         $this->middleware('auth');
         $this->transactionsRepository = app(TransactionRepository::class);
+        $this->categoryRepository = app(CategoryRepository::class);
 
     }
 
@@ -37,12 +40,25 @@ class TransactionController extends Controller
 
         $yearMonth = $this->getYearMonth();
 
-        $transactions = $this->transactionsRepository->getAllTransactions($yearMonth);
+        $transactions = $this->transactionsRepository->getTransactionsPaginate($yearMonth);
 
-        $income = $this->getIncomeTotal($transactions);
-        $spending = $this->getSpendingTotal($transactions);
-        $difference = $this->getIncomeTotal($transactions) - $this->getSpendingTotal($transactions);
+        $income = $this->transactionsRepository->getIncome($yearMonth);
+        $spending = $this->transactionsRepository->getSpending($yearMonth);
+        $difference = $income - $spending;
+        $startBalance = $this->transactionsRepository->getStartBalance($yearMonth);
+        $endBalance = $startBalance + $income - $spending;
 
-        return view('transactions.index', compact('transactions', 'income', 'spending', 'difference'));
+        $categories = $this->categoryRepository->getAllCategories();
+
+        return view('transactions.index',
+            compact('transactions', 'income',
+                'spending', 'difference',
+                'startBalance', 'endBalance',
+                'categories'));
+    }
+
+    public function addTransaction(Request $req)
+    {
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait ForAccountacyTrait
+trait TransactionTrait
 {
     protected function getYearMonth()
     {
@@ -22,26 +22,5 @@ trait ForAccountacyTrait
         }
 
         return date('Y-m');
-    }
-
-    protected function getIncomeTotal($transactions)
-    {
-        return $transactions->sum(function ($transaction) {
-            return $transaction->is_income ?
-                $transaction->amount :
-                0;
-        });
-    }
-
-    protected function getSpendingTotal($transactions)
-    {
-        return $transactions->sum(function ($transaction) {
-            return $transaction->is_income ? 0 : $transaction->amount;
-        });
-    }
-
-    protected function getFormatedTotal($amount)
-    {
-        return number_format($amount, 0, '', ' ');
     }
 }
