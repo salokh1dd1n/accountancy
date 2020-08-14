@@ -13,7 +13,7 @@
             <input type="email" id="inputEmail" class="form-control @error('email') is-invalid @enderror"
                    placeholder="{{ __('E-Mail Address') }}" value="{{ old('email') }}" parsley-type="email"
                    name="email" required autocomplete="email" autofocus>
-            <label for="inputEmail">{{ __('E-Mail Address') }}</label>
+            <label for="inputEmail"><i class="fa fa-envelope auth-icon"></i> {{ __('E-Mail Address') }}</label>
 
             @error('email')
             <span class="invalid-feedback" role="alert">
@@ -24,5 +24,8 @@
         <button class="btn btn-lg btn-primary btn-block text-uppercase"
                 type="submit">{{ __('Send Password Reset Link') }}
         </button>
+        <div class="mt-4">
+            <a href="{{ route('login') }}" class="auth-a"><i class="fa fa-arrow-left auth-icon icon-link"></i> {{ __('Back to login page') }}</a>
+        </div>
     </form>
 @endsection

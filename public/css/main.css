@@ -175,3 +175,13 @@ body {
 .notice-danger>strong {
     color: #d73814;
 }
+.auth-icon {
+    color: #777;
+    padding-right: 5px;
+}
+.auth-a{
+    text-decoration: none !important;
+}
+.icon-link{
+    color: #3490dc;
+}
