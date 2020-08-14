@@ -56,5 +56,8 @@
             Don't have an account?
             <a href="{{ route('register') }}" class="auth-a">Register here</a>
         </div>
+        <div class="mt-2">
+            <a href="{{ route('index') }}" class="auth-a"><i class="fa fa-arrow-left auth-icon icon-link"></i> {{ __('Back to home page') }}</a>
+        </div>
     </form>
 @endsection
