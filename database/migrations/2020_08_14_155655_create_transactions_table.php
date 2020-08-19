@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->date('date');
             $table->unsignedBigInteger('amount');
-            $table->boolean('in_out')->unsigned();
+            $table->boolean('is_income')->unsigned();
             $table->string('description', 250);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('user_id');
@@ -25,6 +25,7 @@ class CreateTransactionsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->index('is_income');
         });
     }
 

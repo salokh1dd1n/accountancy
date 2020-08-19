@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('css/auth.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -76,5 +78,6 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
 </body>
 </html>
