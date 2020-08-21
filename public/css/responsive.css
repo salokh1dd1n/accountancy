@@ -1,0 +1,97 @@
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 576px) {
+    .transaction-description {
+        border-bottom: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .w-xs-100 {
+        width: 100% !important;
+    }
+
+    .amount-middle {
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    .card .card__container {
+        padding: 0.5rem;
+    }
+
+    .card-badge::after {
+        font-size: 12px;
+        width: 8rem;
+        padding: 0.2rem;
+    }
+
+    .card-badge::before {
+        top: 1.2rem;
+    }
+
+    .card .card__header {
+        margin-top: 35px;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .transaction-description {
+        border-bottom: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .w-xs-100 {
+        width: 100% !important;
+    }
+
+    .card .card__container {
+        padding: 0.5rem;
+    }
+
+    .card-badge::after {
+        font-size: 12px;
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+    .card .card__container {
+        padding: 0.5rem;
+    }
+
+    .card-badge::after {
+        font-size: 12px;
+        width: 8rem;
+        padding: 0.3rem;
+    }
+
+    .card .card__header {
+        text-align: center;
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .transaction-card:nth-child(odd) {
+        border-right: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .transaction-description {
+        border-bottom: none;
+    }
+
+    .w-xs-100 {
+        width: auto;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+    .transaction-card:nth-child(odd) {
+        border-right: 1px solid rgba(0, 0, 0, .125);
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+
+}
