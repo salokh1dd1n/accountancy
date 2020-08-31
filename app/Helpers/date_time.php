@@ -31,7 +31,9 @@ function get_months()
 
 function get_years()
 {
-    $yearRange = range(2015, date('Y'));
+    $currentYear = date('Y');
+    $minYear = date('Y', strtotime($currentYear . ' -5 years'));
+    $yearRange = range($minYear, $currentYear);
     foreach ($yearRange as $year) {
         $years[$year] = $year;
     }

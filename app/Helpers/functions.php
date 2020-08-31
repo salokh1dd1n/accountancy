@@ -20,10 +20,18 @@ function isSelected($monthKey, $req, $format = null)
         if ($monthKey == request($req)) {
             return $return;
         }
-    }
-    else{
+    } else {
         if ($monthKey == date($format)) {
             return $return;
         }
+    }
+}
+
+function flash($message = null, $level = 'info')
+{
+    $session = app('session');
+    if (!is_null($message)) {
+        $session->flash('flash_notification.message', $message);
+        $session->flash('flash_notification.level', $level);
     }
 }

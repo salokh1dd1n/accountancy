@@ -18,99 +18,20 @@
                     <div class="col-lg-6 col-12">
                         <h3 class="">Transaction List</h3>
                     </div>
-                    @include('inc.addTransactionModals')
-                </div>
-                @desktop
-
-                <div class="row">
-                    <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                        <div class="card shadow card-badge" data-label="INCOME">
-                            <div class="card__container">
-                                <h2 class="card__header">
-                                    {{ format_number($income) }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                        <div class="card shadow card-badge" data-label="SPENDING">
-                            <div class="card__container">
-                                <h2 class="card__header">
-                                    {{ format_number($spending) }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                        <div class="card shadow card-badge" data-label="DIFFERENCE">
-                            <div class="card__container">
-                                <h2 class="card__header">
-                                    {{ format_number($difference) }}
-                                </h2>
-                            </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="float-right">
+                            <a href="{{ route('transactions', ['action' => 'create']) }}" class="btn btn-success">
+                                Add Transaction
+                            </a>
+                            @include('inc.transactionModals')
                         </div>
                     </div>
                 </div>
-                @elsedesktop
-                <button type="button" class="btn btn-secondary w-100 mb-3" id="toggleBalance">Statistics</button>
-                <section id="mobileStatistics">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-6 col-12 mb-4">
-                            <div class="card shadow card-badge" data-label="START BALANCE">
-                                <div class="card__container">
-                                    <h2 class="card__header">
-                                        {{ format_number($startBalance) }}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6 col-12 mb-4">
-                            <div class="card shadow card-badge" data-label="END BALANCE">
-                                <div class="card__container">
-                                    <h2 class="card__header">
-                                        {{ format_number($endBalance) }}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                            <div class="card shadow card-badge" data-label="INCOME">
-                                <div class="card__container">
-                                    <h2 class="card__header">
-                                        {{ format_number($income) }}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                            <div class="card shadow card-badge" data-label="SPENDING">
-                                <div class="card__container">
-                                    <h2 class="card__header">
-                                        {{ format_number($spending) }}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-4 col-12 mb-4">
-                            <div class="card shadow card-badge" data-label="DIFFERENCE">
-                                <div class="card__container">
-                                    <h2 class="card__header">
-                                        {{ format_number($difference) }}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                @enddesktop
+                @include('inc.statistics')
 
                 <div class="card shadow">
                     <div class="card-header border-0">
-                        @desktop
                         @include('inc.filters')
-                        @elsedesktop
-                        @include('inc.mobile.filters')
-                        @enddesktop
                     </div>
                     <div class="card-header border-0">
                         <div class="row">
@@ -157,7 +78,10 @@
                                     </td>
                                     <td class="text-right text-middle"
                                         nowrap="nowrap">{{ format_number($transaction->amountWithSeparation) }}</td>
-                                    <td class="text-center text-middle"><a href="" class="btn btn-success">Edit</a></td>
+                                    <td class="text-center text-middle">
+                                        <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id]) }}"
+                                           class="btn btn-success">Edit</a>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
@@ -226,17 +150,9 @@
         var day = d.getDate();
 
         var sd = new Date(year - 5, month, day);
-        var en = new Date(year + 5, month, day);
+        var en = new Date();
 
-        $('#incomeDatepicker').datepicker({
-            format: "yyyy-mm-dd",
-            todayHighlight: true,
-            autoclose: true,
-            language: '{{ app()->getLocale() }}',
-            startDate: sd,
-            endDate: en,
-        });
-        $('#spendingDatepicker').datepicker({
+        $('#transactionDatepicker').datepicker({
             format: "yyyy-mm-dd",
             todayHighlight: true,
             autoclose: true,
@@ -251,13 +167,43 @@
             errorsWrapper: '<span class="invalid-feedback" role="alert"></span>',
             errorTemplate: '<strong></strong>',
         });
+        // Filter hide and show Start
+        $('#showFilter').click(function () {
+            $('#hideFilter').show();
+            $('#filter').toggle('slow');
+            $(this).hide();
+        });
 
-        $('#toggleFilter').click(function () {
-            $('#mobileFilter').toggle('slow');
+        $('#hideFilter').click(function () {
+            $('#showFilter').show();
+            $('#filter').toggle('slow');
+            $(this).hide();
         });
-        $('#toggleBalance').click(function () {
+        // Filter hide and show End
+
+        // Statistics hide and show Start
+        $('#showStatistics').click(function () {
+            $('#hideStatistics').show();
             $('#mobileStatistics').toggle('slow');
+            $(this).hide();
         });
+
+        $('#hideStatistics').click(function () {
+            $('#showStatistics').show();
+            $('#mobileStatistics').toggle('slow');
+            $(this).hide();
+        });
+        // Statistics hide and show End
+
+        // $('#toggleBalance').click(function () {
+        //     $('#mobileStatistics').toggle('slow');
+        // });
+        $('#transactionModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+
     </script>
 
 @endpush

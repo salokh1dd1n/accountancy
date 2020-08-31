@@ -1,6 +1,6 @@
 <div class="row">
     @forelse($transactions as $key => $transaction)
-        <div class="col-md-6 col-12 transaction-card">
+        <div class="col-md-6 col-12 transaction-card mb-0">
             <span class="transaction-category" style="background-color: {{ optional($transaction->category)->color }}">
                 {{ optional($transaction->category)->title }}
             </span>
@@ -14,7 +14,7 @@
                             <strong class="text-sm-left text-center"><h4>{{ format_number($transaction->amountWithSeparation) }}</h4></strong>
                         </div>
                         <div class="col-sm-6 col-12">
-                            <a href="" class="btn btn-success btn-sm float-right w-xs-100 mt-sm-0 mt-3">Edit</a>
+                            <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id]) }}" class="btn btn-success btn-sm float-right w-xs-100 mt-sm-0 mt-3">Edit</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,5 @@
 /* Extra Small Devices, Phones */
 @media only screen and (min-width: 576px) {
-    .transaction-description {
-        border-bottom: 1px solid rgba(0, 0, 0, .125);
-    }
 
     .w-xs-100 {
         width: 100% !important;
@@ -32,6 +29,7 @@
         text-align: center;
         font-size: 1.2rem;
     }
+
 }
 
 @media only screen and (max-width: 576px) {
@@ -50,6 +48,23 @@
     .card-badge::after {
         font-size: 12px;
     }
+
+    #showStatistics {
+        display: block;
+    }
+
+    #mobileStatistics {
+        display: none;
+    }
+
+    #showFilter {
+        display: block;
+    }
+
+    #filter {
+        display: none;
+    }
+
 }
 
 /* Small Devices, Tablets */
@@ -66,22 +81,26 @@
 
     .card .card__header {
         text-align: center;
+        font-size: 1rem;
         font-size: 1.5rem;
     }
-}
 
-@media only screen and (max-width: 768px) {
     .transaction-card:nth-child(odd) {
         border-right: 1px solid rgba(0, 0, 0, .125);
     }
 
+}
+
+@media only screen and (max-width: 768px) {
+
     .transaction-description {
-        border-bottom: none;
+        border-bottom: 1px solid rgba(0, 0, 0, .125);
     }
 
     .w-xs-100 {
         width: auto;
     }
+
 }
 
 /* Medium Devices, Desktops */
@@ -94,4 +113,26 @@
 /* Large Devices, Wide Screens */
 @media only screen and (min-width: 1200px) {
 
+    .card .card__container {
+        padding: 2rem;
+    }
+
+    .card .card__header {
+        margin-top: 40px;
+        font-size: 2rem;
+    }
+
+    .card-badge::before {
+        top: 2rem;
+    }
+
+    .card-badge::after {
+        padding: 0.5rem;
+        width: 10rem;
+        font-size: 15px;
+    }
+
+    #statistics {
+        display: none;
+    }
 }

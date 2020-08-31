@@ -273,14 +273,14 @@ thead th, thead td {
     top: -2px;
 }
 
-.transaction-description{
+.transaction-description {
     padding-left: 2rem;
     padding-right: 2rem;
     padding-bottom: 2rem;
     padding-top: 1rem;
 }
 
-.transaction-category{
+.transaction-category {
     top: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -289,17 +289,36 @@ thead th, thead td {
     color: #fff;
 }
 
-.transaction-date{
+.transaction-date {
     color: #3097d1;
     padding-top: 3px;
     font-weight: 500;
     padding-right: 10px;
 }
-.mobileFilter{
-    display: none;
-}
-#mobileStatistics{
+
+#showStatistics {
     display: none;
 }
 
+#hideStatistics {
+    display: none;
+}
 
+#hideFilter {
+    display: none;
+}
+
+#showFilter {
+    display: none;
+}
+
+#filter {
+    display: block;
+}
+
+.btn-filter {
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    fill: red;
+}

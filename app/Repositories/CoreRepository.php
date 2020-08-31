@@ -12,6 +12,7 @@ abstract class CoreRepository
      * @var Model
      */
     protected $model;
+
     /**
      * CoreRepository constructor
      */
@@ -22,8 +23,36 @@ abstract class CoreRepository
 
     abstract public function getModelClass();
 
-    protected function startConditions(){
+
+    protected function startConditions()
+    {
         return clone $this->model;
+    }
+
+    protected function getAddMessage($result)
+    {
+        if ($result) {
+            flash("Успешно сохранено", 'success');
+            return redirect()
+                ->route('transactions');
+        } else {
+            flash("Ощибка сохранения", 'error');
+            return back()
+                ->withInput();
+        }
+    }
+
+    protected function getEditMessage($result)
+    {
+        if ($result) {
+            flash("Успешно обновлено", 'success');
+            return redirect()
+                ->route('transactions');
+        } else {
+            flash("Ощибка обновление", 'error');
+            return back()
+                ->withInput();
+        }
     }
 
 }

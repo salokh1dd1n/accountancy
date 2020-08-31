@@ -18,7 +18,6 @@ class CategoryRepository extends CoreRepository
         $columns = [
             'id',
             'title',
-            'color',
             'user_id',
         ];
 
