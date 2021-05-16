@@ -17,13 +17,24 @@ class TransactionRepository extends CoreRepository
         return Model::class;
     }
 
-    public function getFilterTransactionsPaginate($yearMonth)
+    public function getTransactionsPaginate($yearMonth)
     {
         $result = $this
             ->getTransactions()
             ->where('date', 'like', $yearMonth . '%')
-            ->filterDescription()
-            ->paginate(10);
+//            ->filterDescription()
+            ->paginate(15)
+            ->appends(request()->except('page'));
+        return $result;
+
+    }
+
+    public function getExportTransactions($yearMonth)
+    {
+        $result = $this
+            ->getTransactions()
+            ->where('date', 'like', $yearMonth . '%')
+            ->get();
         return $result;
 
     }
@@ -47,52 +58,96 @@ class TransactionRepository extends CoreRepository
             ->orderBy('date', 'ASC')
             ->with([
                 'category:id,title,color',
-            ]);
+            ])
+            ->when(request('category_id'), function ($transactions, $id){
+               $transactions->where('category_id', $id);
+            })
+            ->when(request('query'), function ($transactions, $query){
+               $transactions->where('description', 'like', '%'.$query.'%');
+            });
         return $result;
 
     }
 
-    public function getStartBalance($yearMonth)
+    public function getNumbers($yearMonth)
     {
-        $result = $this
+        $startBalance = $this
             ->getTransactions()
             ->where([
                 ['is_income', 1],
                 ['date', '<=', $yearMonth],
             ])
-            ->filterDescription()
             ->sum('amount');
-
-        return $result;
-    }
-
-    public function getIncome($yearMonth)
-    {
-        $result = $this
+        $income = $this
             ->getTransactions()
             ->where([
                 ['is_income', 1],
                 ['date', 'like', $yearMonth . '%']
             ])
-            ->filterDescription()
             ->sum('amount');
-
-        return $result;
-    }
-
-    public function getSpending($yearMonth)
-    {
-        $result = $this
+        $spending = $this
             ->getTransactions()
             ->where([
                 ['is_income', 0],
                 ['date', 'like', $yearMonth . '%']
             ])
-            ->filterDescription()
             ->sum('amount');
+        $difference = $income - $spending;
+        $endBalance = $startBalance + $difference;
 
-        return $result;
+        $result = [
+            'startBalance' => $startBalance,
+            'income' => $income,
+            'spending' => $spending,
+            'difference' => $difference,
+            'endBalance' => $endBalance
+        ];
+        $numbers = (object) $result;
+
+        return $numbers;
     }
+
+//    public function getStartBalance($yearMonth)
+//    {
+//        $result = $this
+//            ->getTransactions()
+//            ->where([
+//                ['is_income', 1],
+//                ['date', '<=', $yearMonth],
+//            ])
+////            ->filterDescription()
+//            ->sum('amount');
+//
+//        return $result;
+//    }
+//
+//    public function getIncome($yearMonth)
+//    {
+//        $result = $this
+//            ->getTransactions()
+//            ->where([
+//                ['is_income', 1],
+//                ['date', 'like', $yearMonth . '%']
+//            ])
+////            ->filterDescription()
+//            ->sum('amount');
+//
+//        return $result;
+//    }
+//
+//    public function getSpending($yearMonth)
+//    {
+//        $result = $this
+//            ->getTransactions()
+//            ->where([
+//                ['is_income', 0],
+//                ['date', 'like', $yearMonth . '%']
+//            ])
+////            ->filterDescription()
+//            ->sum('amount');
+//
+//        return $result;
+//    }
 
 
     public function getTransaction(int $id)
@@ -121,21 +176,28 @@ class TransactionRepository extends CoreRepository
         return $result;
     }
 
-    public function addTransaction(array $data)
+    public function getTransactionStatistics($year)
     {
-        $result = $this
-            ->startConditions()
-            ->create($data);
-        return $this->getAddMessage($result);
-    }
+        $columns = 'DATE_FORMAT(date, \'%m\') as month';
+        $columns .= ', YEAR(date) as year';
+        $columns .= ', count(`id`) as count';
+        $columns .= ', sum(if(is_income = 1, amount, 0)) AS income';
+        $columns .= ', sum(if(is_income = 0, amount, 0)) AS spending';
 
-    public function editTransaction(array $data, int $id)
-    {
-        $result = $this
-            ->startConditions()
-            ->findOrFail($id)
-            ->update($data);
+        $statistics = $this->startConditions()
+            ->selectRaw($columns)
+            ->where('user_id', auth()->user()->id)
+            ->whereRaw('YEAR(date) = ?', $year)
+            ->when(request('category_id'), function ($transactions, $id){
+               $transactions->where('category_id', $id);
+            })
+            ->orderBy('year', 'ASC')
+            ->orderBy('month', 'ASC')
+            ->groupByRaw('YEAR(date)')
+            ->groupByRaw('MONTH(date)')
+            ->get();
 
-        return $this->getEditMessage($result);
+        $result = collect($statistics)->keyBy('month');
+        return $result;
     }
 }

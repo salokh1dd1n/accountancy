@@ -4,42 +4,35 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                @if (session('success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('msg'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('msg') }}
-                    </div>
-                @endif
                 <div class="row mb-4">
                     <div class="col-lg-6 col-12">
-                        <h3 class="">Transaction List</h3>
+                        <h3 class="">Список транзакций</h3>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="float-right">
-                            <a href="{{ route('transactions', ['action' => 'create']) }}" class="btn btn-success">
-                                Add Transaction
+                            <a href="{{ route('transactions', ['action' => 'create', 'month' => request('month'), 'year' => request('year')]) }}"
+                               class="btn btn-primary">
+                                Добавить транзакцию
                             </a>
-                            @include('inc.transactionModals')
+                            @include('transactions.transactionModals')
                         </div>
                     </div>
                 </div>
-                @include('inc.statistics')
+                @include('transactions.statistics')
 
                 <div class="card shadow">
                     <div class="card-header border-0">
-                        @include('inc.filters')
+                        @include('transactions.filters')
                     </div>
                     <div class="card-header border-0">
                         <div class="row">
                             <div class="col-lg-8 col-12">
-                                <h5 class="mb-0">Total: {{ $transactions->count() }} Transaction</h5>
+
+                                <h5 class="mb-0">Всего: {{ $transactions->total() }} транзакций</h5>
                             </div>
                             <div class="col-lg-4 col-12 mt-sm-0 mt-3">
-                                <a href="" class="btn btn-info btn-sm float-right">Export Excel</a>
+                                <a href="{{ route('transactions.export', ['category_id' => request('category_id'), 'query' => request('query')]) }}"
+                                   class="btn btn-info btn-sm float-right">Экспорт в Excel</a>
                             </div>
                         </div>
                     </div>
@@ -48,12 +41,13 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Transaction Description</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" class="text-center">№</th>
+                                <th scope="col" class="text-center">Тип</th>
+                                <th scope="col" class="text-center">Дата</th>
+                                <th scope="col">Комментарий</th>
+                                <th scope="col">Категория</th>
+                                <th scope="col" class="text-right">Сумма</th>
+                                <th scope="col" class="text-center">Действие</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -65,6 +59,13 @@
                                 @endphp
                                 <tr>
                                     <th class="text-center text-middle">{{ $key + 1 }}</th>
+                                    <td class="text-center text-middle">
+                                        @if($transaction->is_income)
+                                            Доход
+                                        @else
+                                            Расход
+                                        @endif
+                                    </td>
                                     @if ($firstGroup->id == $transaction->id)
                                         <td class="text-center text-middle"
                                             rowspan="{{ $groupCount }}">{{ $transaction->dateOnly }}</td>
@@ -79,37 +80,40 @@
                                     <td class="text-right text-middle"
                                         nowrap="nowrap">{{ format_number($transaction->amountWithSeparation) }}</td>
                                     <td class="text-center text-middle">
-                                        <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id]) }}"
-                                           class="btn btn-success">Edit</a>
+                                        <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id, 'month' => request('month'), 'year' => request('year')]) }}"
+                                           class="btn btn-success">Редактировать</a>
+                                        <a href="{{ route('transactions', ['action' => 'delete', 'id' => $transaction->id, 'month' => request('month'), 'year' => request('year')]) }}"
+                                           class="btn btn-danger">Удалить</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <th class="text-center text-middle"
-                                        colspan="6">{{ __('transaction.not_found') }}</th>
+                                        colspan="7">Транзакции не найдено
+                                    </th>
                                 </tr>
                             @endforelse
                             <tr>
-                                <th colspan="4" class="text-right">Start Balance</th>
-                                <td colspan="2">{{ format_number($startBalance) }}</td>
+                                <th colspan="5" class="text-right">Начальный баланс</th>
+                                <td colspan="2">{{ format_number($numbers->startBalance) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="4" class="text-right">Income Total</th>
-                                <td colspan="2">{{ format_number($income) }}</td>
+                                <th colspan="5" class="text-right">Общий доход</th>
+                                <td colspan="2">{{ format_number($numbers->income) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="4" class="text-right">Spending Total</th>
-                                <td colspan="2">{{ format_number($spending) }}</td>
+                                <th colspan="5" class="text-right">Общая сумма расходов</th>
+                                <td colspan="2">{{ format_number($numbers->spending) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="4" class="text-right">End Balance</th>
-                                <td colspan="2">{{ format_number($endBalance) }}</td>
+                                <th colspan="5" class="text-right">Конечный баланс</th>
+                                <td colspan="2">{{ format_number($numbers->endBalance) }}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     @elsedesktop
-                    @include('inc.mobile.transactions_table')
+                    @include('transactions.mobile.transactions_table')
                     @enddesktop
                     <div class="card-footer pt-4">
                         @if($transactions->total() > $transactions->count())

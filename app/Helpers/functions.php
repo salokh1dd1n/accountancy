@@ -10,18 +10,20 @@ function format_number($number)
 {
     $number = number_format($number, 0, '', ' ');
 
-    return str_replace('-', '- ', $number);
+    $result = str_replace('-', '- ', $number);
+
+    return $result;
 }
 
-function isSelected($monthKey, $req, $format = null)
+function isSelected($key, $req, $format = null)
 {
     $return = 'selected';
     if (request($req)) {
-        if ($monthKey == request($req)) {
+        if ($key == request($req)) {
             return $return;
         }
     } else {
-        if ($monthKey == date($format)) {
+        if ($key == date($format)) {
             return $return;
         }
     }

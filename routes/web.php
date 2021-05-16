@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +19,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/transactions', 'TransactionController@index')->name('transactions');
-Route::post('/transactions/add', 'TransactionController@create')->name('transactions.add');
-Route::post('/transactions/delete/{id}', 'TransactionController@delete')->name('transactions.delete');
+Route::post('/transactions/create', 'TransactionController@create')->name('transactions.create');
 Route::patch('/transactions/edit/{id}', 'TransactionController@edit')->name('transactions.edit');
+Route::delete('/transactions/delete/{id}', 'TransactionController@destroy')->name('transactions.delete');
+Route::get('/transactions/export', 'TransactionController@exportData')->name('transactions.export');
+
+Route::get('/categories', 'CategoryController@index')->name('categories');
+Route::post('/categories/create', 'CategoryController@create')->name('categories.create');
+Route::patch('/categories/edit/{id}', 'CategoryController@edit')->name('categories.edit');
+Route::get('/categories/{id}', 'CategoryController@showRelatedTransactions')->name('categories.transactions');
+Route::delete('/categories/delete/{id}', 'CategoryController@destroy')->name('categories.delete');
+
+Route::get('/statistics', 'StatisticsController@index')->name('statistics');

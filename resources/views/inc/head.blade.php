@@ -14,6 +14,8 @@
     <!-- Styles -->
     <link href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('libs/datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('libs/colorpicker/bootstrap-colorpicker.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('libs/morris/css/morris.css') }}" rel="stylesheet"/>
     <link href="{{ asset('libs/fontawesome/css/all.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">

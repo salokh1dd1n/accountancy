@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Category::class, function (Faker $faker) {
     return [
-        'title' => $faker->word,
-        'description' => $faker->text(250),
+        'title' => $faker->unique()->word,
+        'description' => $faker->text(70),
         'color' => $faker->hexColor,
         'user_id' => rand(1, 5),
     ];

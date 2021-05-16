@@ -65,8 +65,7 @@ class Transaction extends Model
 
     public function scopeFilterCategory($query)
     {
-        return
-        $query->when(request('category_id'), function ($q, $categoryId) {
+        return $query->when(request('category_id'), function ($q, $categoryId) {
                 if ($categoryId == 'null') {
                     $q->whereNull('category_id');
                 } else {
@@ -76,8 +75,7 @@ class Transaction extends Model
     }
     public function scopeFilterDescription($query)
     {
-        return
-        $query->when(request('query'), function ($q, $query) {
+        return $query->when(request('query'), function ($q, $query) {
                 $q->where('description', 'like', '%'.$query.'%');
             });
     }
