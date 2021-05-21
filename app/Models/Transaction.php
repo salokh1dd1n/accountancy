@@ -44,24 +44,22 @@ class Transaction extends Model
 
     public function getDateOnlyAttribute()
     {
-        $day = Carbon::parse($this->date)->day;
+        $day = Carbon::parse($this->date)->format('d');
         return $day;
     }
 
-    public function getAmountWithSeparationAttribute()
+    public function getMonthOnlyAttribute()
     {
-        if (!$this->is_income){
-            return '-' . $this->amount;
-        }
-        else{
-            return $this->amount;
-        }
+        $day = Carbon::parse($this->date)->format('m');
+        return $day;
     }
 
-    public function getFormatedAmountAttribute()
+    public function getYearOnlyAttribute()
     {
-        return number_format($this->amount, 0, '', ' ');
+        $day = Carbon::parse($this->date)->format('Y');
+        return $day;
     }
+
 
     public function scopeFilterCategory($query)
     {

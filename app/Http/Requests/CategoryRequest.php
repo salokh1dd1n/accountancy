@@ -26,9 +26,9 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|unique:categories,title,creator_id'.Auth::id().'|max:30|min:3',
+            'title' => 'required|string|max:30|min:3',
             'description' => 'string|max:70|min:3',
-            'color' => 'required|'
+            'color' => 'required',
 //            regex:/^(\#[\da-f]{3}|\#[\da-f]{6})$/
 
         ];

@@ -18,12 +18,14 @@ class StatisticsController extends Controller
 
     public function index()
     {
-        $year = parent::getYear();
-        $statistics = $this->transactionRepository->getTransactionStatistics($year);
+        $routeYear = parent::getYear();
+        $numbers = $this->transactionRepository->getNumbers($routeYear);
+        $profit = $numbers->endBalance;
+        $statistics = $this->transactionRepository->getTransactionStatistics($routeYear);
         $categories = $this->categoryRepository->getAllCategories();
 
 //        dd($statistics);
 
-        return view('statistics.index', compact('statistics', 'year', 'categories'));
+        return view('statistics.index', compact('statistics', 'routeYear', 'categories', 'profit'));
     }
 }

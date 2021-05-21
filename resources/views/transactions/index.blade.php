@@ -68,7 +68,7 @@
                                     </td>
                                     @if ($firstGroup->id == $transaction->id)
                                         <td class="text-center text-middle"
-                                            rowspan="{{ $groupCount }}">{{ $transaction->dateOnly }}</td>
+                                            rowspan="{{ $groupCount }}">{{ $transaction->date }}</td>
                                     @endif
                                     <td class="text-middle">
                                         {{ $transaction->description }}
@@ -78,11 +78,11 @@
                                               style="background-color: {{ optional($transaction->category)->color }};">{{ optional($transaction->category)->title }}</span>
                                     </td>
                                     <td class="text-right text-middle"
-                                        nowrap="nowrap">{{ format_number($transaction->amountWithSeparation) }}</td>
+                                        nowrap="nowrap">{{ format_number($transaction->amount) }}</td>
                                     <td class="text-center text-middle">
-                                        <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id, 'month' => request('month'), 'year' => request('year')]) }}"
+                                        <a href="{{ route('transactions', ['action' => 'edit', 'id' => $transaction->id, 'month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                                            class="btn btn-success">Редактировать</a>
-                                        <a href="{{ route('transactions', ['action' => 'delete', 'id' => $transaction->id, 'month' => request('month'), 'year' => request('year')]) }}"
+                                        <a href="{{ route('transactions', ['action' => 'delete', 'id' => $transaction->id, 'month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                                            class="btn btn-danger">Удалить</a>
                                     </td>
                                 </tr>
@@ -199,15 +199,11 @@
         });
         // Statistics hide and show End
 
-        // $('#toggleBalance').click(function () {
-        //     $('#mobileStatistics').toggle('slow');
-        // });
         $('#transactionModal').modal({
             show: true,
             keyboard: false,
             backdrop: 'static'
         });
-
     </script>
 
 @endpush

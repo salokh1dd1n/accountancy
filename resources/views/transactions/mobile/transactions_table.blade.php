@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-12">
                             <strong class="text-sm-left text-center">
-                                <h5>{{ format_number($transaction->amountWithSeparation) }}</h5></strong>
+                                <h5>{{ format_number($transaction->amount) }}</h5></strong>
                         </div>
                         <div class="col-sm-6 col-12">
                             <div class="row">

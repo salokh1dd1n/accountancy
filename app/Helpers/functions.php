@@ -6,11 +6,9 @@
  * @param $number
  * @return string
  */
-function format_number($number)
+function format_number(float $number)
 {
-    $number = number_format($number, 0, '', ' ');
-
-    $result = str_replace('-', '- ', $number);
+    $result = number_format($number, 2, '.', ' ');
 
     return $result;
 }

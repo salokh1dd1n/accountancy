@@ -23,6 +23,19 @@ abstract class CoreRepository
 
     abstract public function getModelClass();
 
+    public function addRecord(array $data, string $route)
+    {
+        $redirect = $route;
+
+        if (isset($data['date'])) {
+            $redirect = $this->redirectWithFilterParams($data['date'], $route);
+        }
+        $result = $this
+            ->startConditions()
+            ->create($data);
+        return $this->getMessage($result, $redirect, 'create', 'success');
+    }
+
     protected function redirectWithFilterParams(string $date, $route)
     {
         $date = strtotime($date);
@@ -40,11 +53,11 @@ abstract class CoreRepository
 
     protected function getMessage($result, $route, $type, $status)
     {
-        if ($type = 'create') {
+        if ($type == 'create') {
             $message = 'Успешно сохранено';
-        } else if ($type = 'edit') {
+        } else if ($type == 'edit') {
             $message = 'Успешно обновлено';
-        } elseif ($type = 'delete') {
+        } elseif ($type == 'delete') {
             $message = 'Успешно удалено';
         }
         if ($result) {
@@ -55,19 +68,6 @@ abstract class CoreRepository
             return back()
                 ->withInput();
         }
-    }
-
-    public function addRecord(array $data, string $route)
-    {
-        $redirect = $route;
-
-        if (isset($data['date'])) {
-            $redirect = $this->redirectWithFilterParams($data['date'], $route);
-        }
-        $result = $this
-            ->startConditions()
-            ->create($data);
-        return $this->getMessage($result, $redirect, 'create', 'success');
     }
 
     public function editRecord(array $data, int $id, string $route)
@@ -89,8 +89,8 @@ abstract class CoreRepository
     {
         $redirect = $route;
 
-        if (isset($data['date'])) {
-            $transactionDate = $this->getTransaction($id)->date;
+        $transactionDate = $this->getTransaction($id)->date;
+        if (isset($transactionDate)) {
             $redirect = $this->redirectWithFilterParams($transactionDate, $route);
         }
 

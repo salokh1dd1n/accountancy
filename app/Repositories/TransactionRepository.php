@@ -29,16 +29,6 @@ class TransactionRepository extends CoreRepository
 
     }
 
-    public function getExportTransactions($yearMonth)
-    {
-        $result = $this
-            ->getTransactions()
-            ->where('date', 'like', $yearMonth . '%')
-            ->get();
-        return $result;
-
-    }
-
     public function getTransactions()
     {
         $columns = [
@@ -59,25 +49,38 @@ class TransactionRepository extends CoreRepository
             ->with([
                 'category:id,title,color',
             ])
-            ->when(request('category_id'), function ($transactions, $id){
-               $transactions->where('category_id', $id);
+            ->when(request('category_id'), function ($transactions, $id) {
+                $transactions->where('category_id', $id);
             })
-            ->when(request('query'), function ($transactions, $query){
-               $transactions->where('description', 'like', '%'.$query.'%');
+            ->when(request('query'), function ($transactions, $query) {
+                $transactions->where('description', 'like', '%' . $query . '%');
             });
+        return $result;
+
+    }
+
+    public function getExportTransactions($yearMonth)
+    {
+        $result = $this
+            ->getTransactions()
+            ->where('date', 'like', $yearMonth . '%')
+            ->get();
         return $result;
 
     }
 
     public function getNumbers($yearMonth)
     {
-        $startBalance = $this
+        $transactions = $this
             ->getTransactions()
             ->where([
-                ['is_income', 1],
                 ['date', '<=', $yearMonth],
             ])
-            ->sum('amount');
+            ->get();
+
+        $startBalance = $transactions->sum(function ($transaction) {
+            return $transaction->is_income ? $transaction->amount : -$transaction->amount;
+        });
         $income = $this
             ->getTransactions()
             ->where([
@@ -94,6 +97,7 @@ class TransactionRepository extends CoreRepository
             ->sum('amount');
         $difference = $income - $spending;
         $endBalance = $startBalance + $difference;
+//        dd($startBalance);
 
         $result = [
             'startBalance' => $startBalance,
@@ -102,7 +106,7 @@ class TransactionRepository extends CoreRepository
             'difference' => $difference,
             'endBalance' => $endBalance
         ];
-        $numbers = (object) $result;
+        $numbers = (object)$result;
 
         return $numbers;
     }
@@ -150,6 +154,7 @@ class TransactionRepository extends CoreRepository
 //    }
 
 
+
     public function getTransaction(int $id)
     {
         $columns = [
@@ -188,8 +193,8 @@ class TransactionRepository extends CoreRepository
             ->selectRaw($columns)
             ->where('user_id', auth()->user()->id)
             ->whereRaw('YEAR(date) = ?', $year)
-            ->when(request('category_id'), function ($transactions, $id){
-               $transactions->where('category_id', $id);
+            ->when(request('category_id'), function ($transactions, $id) {
+                $transactions->where('category_id', $id);
             })
             ->orderBy('year', 'ASC')
             ->orderBy('month', 'ASC')
@@ -200,4 +205,5 @@ class TransactionRepository extends CoreRepository
         $result = collect($statistics)->keyBy('month');
         return $result;
     }
+
 }

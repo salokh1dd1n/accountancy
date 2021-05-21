@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->unsignedBigInteger('amount');
+            $table->unsignedFloat('amount', 12, 2);
             $table->boolean('is_income')->unsigned();
             $table->string('description', 250);
             $table->unsignedBigInteger('category_id')->nullable();

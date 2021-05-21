@@ -3,7 +3,7 @@
     <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ route('transactions.create') }}" method="POST">
+                <form action="{{ route('transactions.create', ['month' => request('month'), 'year' => request('year')]) }}" method="POST">
                     @csrf
                     <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
                     <div class="modal-header bg-primary">
@@ -51,8 +51,8 @@
                             <div class="col-lg-6 col-12">
                                 <div class="form-group required">
                                     <label for="amount" class="required-input">Сумма</label>
-                                    <input class="form-control text-right @error('amount') is-invalid @enderror"
-                                           name="amount"
+                                    <input class="form-control text-right @error('amount') is-invalid @enderror amount"
+                                           name="amount" step="0.01"
                                            type="number" data-parsley-maxlength="20" parsley-type="number"
                                            id="amount" value="{{ old('amount') }}"
                                            required>
@@ -117,13 +117,13 @@
         <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="{{ route('transactions.edit', $transaction->id) }}" method="POST">
+                    <form action="{{ route('transactions.edit', [$transaction->id, 'date' => '12', 'month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}" method="POST">
                         @method('PATCH')
                         @csrf
                         <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
                         <div class="modal-header bg-success">
                             <h5 class="modal-title text-light" id="exampleModalLabel">Редактировать транзакцию</h5>
-                            <a href="{{ route('transactions', ['month' => request('month'), 'year' => request('year')]) }}"
+                            <a href="{{ route('transactions', ['month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                                class="close text-light">
                                 <span aria-hidden="true">&times;</span>
                             </a>
@@ -168,7 +168,7 @@
                                     <div class="form-group required">
                                         <label for="amount" class="required-input">Сумма</label>
                                         <input class="form-control text-right @error('amount') is-invalid @enderror"
-                                               name="amount"
+                                               name="amount" step="0.01"
                                                type="number" data-parsley-maxlength="20" parsley-type="number"
                                                id="amount" value="{{ $transaction->amount }}"
                                                required>
@@ -215,7 +215,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('transactions', ['month' => request('month'), 'year' => request('year')]) }}"
+                            <a href="{{ route('transactions', ['month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                                class="btn btn-secondary">Отмена</a>
                             <button type="submit" class="btn btn-success">Редактировать</button>
                         </div>
@@ -231,13 +231,13 @@
     <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ route('transactions.delete', $transaction->id) }}" method="POST">
+                <form action="{{ route('transactions.delete', [$transaction->id, 'month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}" method="POST">
                     @method('DELETE')
                     @csrf
                     <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
                     <div class="modal-header bg-danger">
-                        <h5 class="modal-title text-light" id="exampleModalLabel">Удалить транзакцию</h5>
-                        <a href="{{ route('transactions', ['month' => request('month'), 'year' => request('year')]) }}"
+                        <h5 class="modal-title text-light" id="exampleModalLabel">Удалить транзакцию)</h5>
+                        <a href="{{ route('transactions', ['month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                            class="close text-light">
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -246,7 +246,7 @@
                         Вы уверены, что хотите удалить эту транзакцию? Это действие нельзя отменить.
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ route('transactions', ['month' => request('month'), 'year' => request('year')]) }}"
+                        <a href="{{ route('transactions', ['month' => $transaction->monthOnly, 'year' => $transaction->yearOnly]) }}"
                            class="btn btn-secondary">Отмена</a>
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </div>

@@ -8,6 +8,7 @@
 
                 <div class="card shadow">
                     <div class="card-header border-0">
+                        <h3>Итог за {{ $routeYear }} год: {{ format_number($profit) }}</h3>
                     </div>
                     <div class="card-header border-0">
                         <form action="">
@@ -68,7 +69,7 @@
                                     <td class="text-right text-middle">{{ format_number($spending = ($isset ? $statistics[$monthNumber]->spending : 0)) }}</td>
                                     <td class="text-right text-middle">{{ format_number($difference = ($isset ? ($statistics[$monthNumber]->income - $statistics[$monthNumber]->spending) : 0)) }}</td>
                                     <td class="text-center text-middle"><a
-                                            href="{{ route('transactions', ['month' => $monthNumber, 'year' => $year]) }}"
+                                            href="{{ route('transactions', ['month' => $monthNumber, 'year' => $routeYear]) }}"
                                             class="btn btn-info">Просмотр по месяцам</a></td>
                                 </tr>
                                 @php

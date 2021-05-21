@@ -30,7 +30,7 @@ class TransactionRequest extends FormRequest
         return [
             'date' => 'required|date|date_format:Y-m-d',
             'category_id' => 'exists:categories,id|nullable',
-            'amount' => 'required|digits_between:1,20',
+            'amount' => 'required|numeric',
             'is_income' => 'required|in:0,1',
             'description' => 'string|max:250|min:3',
         ];

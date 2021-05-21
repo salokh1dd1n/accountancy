@@ -15,7 +15,7 @@
             </select>
         </div>
         <div class="col-lg-2 col-md-6 p-1">
-            <select class="form-control selectpicker" name="date" data-size="10" data-style="btn-filter">
+            <select class="form-control selectpicker" name="day" data-size="10" data-style="btn-filter">
                 <option selected="selected" value="">--</option>
                 @foreach(get_dates() as $date)--}}
                 <option value="{{ $date }}" {{ isSelected($date, 'date') }}>{{ $date }}</option>
@@ -24,6 +24,7 @@
         </div>
         <div class="col-lg-2 col-md-6 p-1">
             <select class="form-control selectpicker" name="month" data-size="10" data-style="btn-filter">
+                <option value="all">-- Все месяцы --</option>
                 @foreach(get_months() as $key => $month)
                     <option value="{{ $key }}" {{ isSelected($key, 'month', 'm') }}>{{ $month }}</option>
                 @endforeach

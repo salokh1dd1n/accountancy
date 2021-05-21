@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TransactionsExport;
-use Maatwebsite\Excel\Excel;
 use App\Http\Requests\TransactionRequest;
-use App\Policies\TransactionPolicy;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TransactionRepository;
+use Maatwebsite\Excel\Excel;
 
 class TransactionController extends Controller
 {
@@ -41,14 +40,15 @@ class TransactionController extends Controller
     {
 
         $yearMonth = parent::getYearMonth();
-
+//        dd($yearMonth);
         $transactions = $this->transactionsRepository->getTransactionsPaginate($yearMonth);
         $transaction = null;
+
+//        dd($yearMonth);
 
         $numbers = $this->transactionsRepository->getNumbers($yearMonth);
 
         $categories = $this->categoryRepository->getAllCategories();
-//        dd($categories);
 
         if (in_array(request('action'), ['edit', 'delete']) and request('id') != null) {
             $transaction = $this->transactionsRepository->getTransaction(request('id'));
@@ -56,20 +56,38 @@ class TransactionController extends Controller
         }
 
         return view('transactions.index',
-            compact('transactions', 'numbers', 'categories', 'transaction'));
+            compact('transactions', 'numbers', 'categories', 'transaction', 'yearMonth'));
     }
 
     public function create(TransactionRequest $request)
     {
+        $yearMonth = parent::getYearMonth();
+//        dd($yearMonth);
+        $numbers = $this->transactionsRepository->getNumbers($yearMonth);
         $data = $request->input();
-        $result = $this->transactionsRepository->addRecord($data, $this->route);
+        if (!$request->is_income && $request->amount > $numbers->income) {
+            return back()
+                ->withErrors(['amount' => 'Расходы превышают сумму дохода ('.format_number($numbers->income).') за этот месяц'])
+                ->withInput();
+        } else {
+            $result = $this->transactionsRepository->addRecord($data, $this->route);
+        }
         return $result;
     }
 
     public function edit(TransactionRequest $request, $id)
     {
+        $yearMonth = parent::getYearMonth();
+        $numbers = $this->transactionsRepository->getNumbers($yearMonth);
+        $transaction = $this->transactionsRepository->getTransaction($id);
         $data = $request->input();
-        $result = $this->transactionsRepository->editRecord($data, $id, $this->route);
+        if (!$request->is_income && $request->amount > ($numbers->income - $transaction->amount)) {
+            return back()
+                ->withErrors(['amount' => 'Расходы превышают сумму дохода ('.format_number($numbers->income - $transaction->amount).') за этот месяц'])
+                ->withInput();
+        } else {
+            $result = $this->transactionsRepository->editRecord($data, $id, $this->route);
+        }
 
         return $result;
     }

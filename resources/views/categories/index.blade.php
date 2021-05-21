@@ -55,7 +55,7 @@
                             @empty
                                 <tr>
                                     <th class="text-center text-middle"
-                                        colspan="7">Транзакции не найдено
+                                        colspan="7">Категории не найдена
                                     </th>
                                 </tr>
                             @endforelse

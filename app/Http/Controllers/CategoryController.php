@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
-use App\Http\Requests\CategoryUpdateRequest;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TransactionRepository;
 
@@ -91,7 +90,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(CategoryUpdateRequest $request, $id)
+    public function edit(CategoryRequest $request, $id)
     {
         $data = $request->input();
         $result = $this->categoryRepository->editRecord($data, $id, $this->route);
@@ -119,15 +118,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->categoryRepository->deleteRecord($id, $this->route);
+    $result = $this->categoryRepository->deleteRecord($id, $this->route);
         return $result;
     }
 
-    public function showRelatedTransactions($id)
-    {
-        $yearMonth = parent::getYearMonth();
-        $numbers = $this->transactionsRepository->getNumbers($yearMonth);
-        $transactions = $this->transactionsRepository->getTransactionsByCategory($id);
-        return view('categories.categoryTransactions', compact('transactions', 'numbers'));
-    }
 }

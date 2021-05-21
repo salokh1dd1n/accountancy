@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,3 +32,7 @@ Route::get('/categories/{id}', 'CategoryController@showRelatedTransactions')->na
 Route::delete('/categories/delete/{id}', 'CategoryController@destroy')->name('categories.delete');
 
 Route::get('/statistics', 'StatisticsController@index')->name('statistics');
+
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+});
