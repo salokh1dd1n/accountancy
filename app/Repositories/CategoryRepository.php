@@ -4,8 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Category as Model;
 
-cl
-CategoryRepository extends CoreRepository
+class CategoryRepository extends CoreRepository
 {
 
     public function getModelClass()

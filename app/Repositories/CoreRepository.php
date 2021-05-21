@@ -89,8 +89,8 @@ abstract class CoreRepository
     {
         $redirect = $route;
 
-        $transactionDate = $this->getTransaction($id)->date;
-        if (isset($transactionDate)) {
+        if (method_exists($this, 'getTransaction')) {
+            $transactionDate = $this->getTransaction($id)->date;
             $redirect = $this->redirectWithFilterParams($transactionDate, $route);
         }
 
