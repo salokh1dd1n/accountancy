@@ -28,7 +28,7 @@
                 <span class="badge" style="background-color: {{ optional($transaction->category)->color }};">{{ optional($transaction->category)->title }}</span>
             </td>
             <td class="text-right text-middle"
-                nowrap="nowrap">{{ $transaction->amountWithSeparation }}</td>
+                nowrap="nowrap">{{ format_number($transaction->amount) }}</td>
         </tr>
     @empty
         <tr>
@@ -39,19 +39,19 @@
     @endforelse
     <tr>
         <th colspan="4" class="text-right">Начальный баланс</th>
-        <td colspan="2">{{ $numbers->startBalance }}</td>
+        <td colspan="2">{{ format_number($numbers->startBalance) }}</td>
     </tr>
     <tr>
         <th colspan="4" class="text-right">Общий доход</th>
-        <td colspan="2">{{ $numbers->income }}</td>
+        <td colspan="2">{{ format_number($numbers->income) }}</td>
     </tr>
     <tr>
         <th colspan="4" class="text-right">Общая сумма расходов</th>
-        <td colspan="2">{{ $numbers->spending }}</td>
+        <td colspan="2">{{ format_number($numbers->spending) }}</td>
     </tr>
     <tr>
         <th colspan="4" class="text-right">Конечный баланс</th>
-        <td colspan="2">{{ $numbers->endBalance }}</td>
+        <td colspan="2">{{ format_number($numbers->endBalance) }}</td>
     </tr>
     </tbody>
 </table>

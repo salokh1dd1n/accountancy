@@ -31,7 +31,7 @@
                                 <h5 class="mb-0">Всего: {{ $transactions->total() }} транзакций</h5>
                             </div>
                             <div class="col-lg-4 col-12 mt-sm-0 mt-3">
-                                <a href="{{ route('transactions.export', ['category_id' => request('category_id'), 'query' => request('query')]) }}"
+                                <a href="{{ route('transactions.export', ['category_id' => request('category_id'), 'query' => request('query'), 'day' => request('day'), 'month' => request('month'), 'year' => request('year')]) }}"
                                    class="btn btn-info btn-sm float-right">Экспорт в Excel</a>
                             </div>
                         </div>

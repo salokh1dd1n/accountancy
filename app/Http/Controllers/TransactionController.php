@@ -40,14 +40,12 @@ class TransactionController extends Controller
     {
 
         $yearMonth = parent::getYearMonth();
-//        dd($yearMonth);
+
         $transactions = $this->transactionsRepository->getTransactionsPaginate($yearMonth);
         $transaction = null;
 
-//        dd($yearMonth);
-
         $numbers = $this->transactionsRepository->getNumbers($yearMonth);
-
+//        dd($numbers);
         $categories = $this->categoryRepository->getAllCategories();
 
         if (in_array(request('action'), ['edit', 'delete']) and request('id') != null) {
@@ -65,9 +63,9 @@ class TransactionController extends Controller
 //        dd($yearMonth);
         $numbers = $this->transactionsRepository->getNumbers($yearMonth);
         $data = $request->input();
-        if (!$request->is_income && $request->amount > $numbers->income) {
+        if (!$request->is_income && $request->amount > $numbers->endBalance) {
             return back()
-                ->withErrors(['amount' => 'Расходы превышают сумму дохода ('.format_number($numbers->income).') за этот месяц'])
+                ->withErrors(['amount' => 'Расходы превышают конечный баланс ('.format_number($numbers->endBalance).') за этот месяц'])
                 ->withInput();
         } else {
             $result = $this->transactionsRepository->addRecord($data, $this->route);
@@ -102,7 +100,7 @@ class TransactionController extends Controller
     public function exportData()
     {
         $yearMonth = parent::getYearMonth();
-
+//        dd($yearMonth);
         $result = $this->excel->download(new TransactionsExport($yearMonth), 'transactions.xlsx');
 
         return $result;

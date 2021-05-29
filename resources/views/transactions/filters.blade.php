@@ -8,7 +8,7 @@
         </div>
         <div class="col-lg-2 col-md-6 p-1">
             <select class="form-control selectpicker" name="category_id" data-size="10" data-style="btn-filter">
-                <option value="" selected>-- Без категории --</option>
+                <option value="" selected>-- Все категории --</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}" @if($category->id == request('category_id')) selected @endif>{{ $category->title }}</option>
                 @endforeach
