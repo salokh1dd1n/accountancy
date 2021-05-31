@@ -79,9 +79,9 @@ class TransactionController extends Controller
         $numbers = $this->transactionsRepository->getNumbers($yearMonth);
         $transaction = $this->transactionsRepository->getTransaction($id);
         $data = $request->input();
-        if (!$request->is_income && $request->amount > ($numbers->income - $transaction->amount)) {
+        if (!$request->is_income && $request->amount > ($numbers->endBalance + $transaction->amount)) {
             return back()
-                ->withErrors(['amount' => 'Расходы превышают сумму дохода ('.format_number($numbers->income - $transaction->amount).') за этот месяц'])
+                ->withErrors(['amount' => 'Расходы превышают конечный баланс ('.format_number($numbers->endBalance + $transaction->amount).') за этот месяц'])
                 ->withInput();
         } else {
             $result = $this->transactionsRepository->editRecord($data, $id, $this->route);
